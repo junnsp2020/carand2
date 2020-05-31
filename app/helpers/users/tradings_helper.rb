@@ -1,0 +1,2 @@
+module Users::TradingsHelper
+end
