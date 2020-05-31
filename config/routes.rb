@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
+  devise_for :administers, controllers: {
+    registrations: "administers/registrations",
+    sessions: "administers/sessions",
+    passwords: "administers/passwords"
+  }
+  devise_for :users, :controllers => {
+    :registrations => "users/registrations",
+    :sessions => "users/sessions",
+    :passwords => "users/passwords"
+  }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   namespace :administers do
   	root "home#top"
   	resources :users, except: [:new, :create]
