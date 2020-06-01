@@ -1,0 +1,129 @@
+<div class="container">
+	<% if @user == current_user %>
+	<div class="col-xs-2 sidebar">
+        <ul class="nav nav-sidebar navbar-light">
+            <ul class="nav nav-sidebar navbar-light">
+            	<h5>マイページメニュー</h5>
+					<li class="list-group-item"><%= link_to "ほしいものリスト", wish_wishlists_path, :style=>"color:black; text-align:center;" %></li>
+				<h5>商品を出品する</h5>
+					<li class="list-group-item"><%=link_to "商品を出品する", new_product_path, :style=>"color:black; text-align:center;" %></li>
+					<li class="list-group-item"><%=link_to "出品中の商品", my_product_products_path, :style=>"color:black; text-align:center;" %></li>
+					<li class="list-group-item"><%=link_to "売れた商品", sold_tradings_path, :style=>"color:black; text-align:center;" %></li>
+				<h5>購入した商品</h5>
+					<li class="list-group-item"><%=link_to "購入した商品", bought_tradings_path, :style=>"color:black; text-align:center;" %></li>
+				<h5>交換</h5>
+					<li class="list-group-item"><%=link_to "交換リクエスト 【 送った 】", my_request_barter_requests_path(current_user.id), :style=>"color:black; text-align:center;" %></li>
+					<li class="list-group-item"><%=link_to "交換リクエスト 【 もらった 】", requested_barter_requests_path, :style=>"color:black; text-align:center; " %></li>
+				<h5>設定・その他</h5>
+					<li class="list-group-item"><%= link_to "個人情報詳細", userinfo_user_path, :style=>"color:black; text-align:center;" %></li>
+					<li class="list-group-item"><%= link_to "ログアウト", destroy_user_session_path, method: :delete, :style=>"color:black; text-align:center;" %></li>
+			</ul>
+        </ul>
+	</div>
+	<% end %>
+	<div class="col-xs-10">
+		<div class="image-user-show"><%= attachment_image_tag @user, :image, format: "jpeg", fallback: "no_image.jpg", size: "200x200" %></div>
+		<div class="table-user-show">
+			<table class="table table-bordered">
+				<tr>
+					<td style="border-top-style: hidden; border-right-style: hidden; border-left-style: hidden;">
+						<span class="smile"><i class="far fa-smile-wink"></i></span>&nbsp;<span class="nickname"><%= @user.nickname %> さん</span>
+					</td>
+				</tr>
+				<tbody style="border: 2px #808080 solid;">
+					<% if @user == current_user %>
+					<tr>
+						<td class="balance"  bgcolor="#fff">
+                            <% if @user.balance %>
+								カランド内 残高 &nbsp;&nbsp;&nbsp;<%= number_to_currency(@user.balance, :unit => "￥", :precision => 0) %>
+						 	<% else %>
+								カランド内 残高 &nbsp;&nbsp;&nbsp;<%= "￥ 0" %>
+							<% end %>
+						</td>
+					</tr>
+					<tr>
+						<td  bgcolor="#fff"><%= link_to "振込申請する", usertransfer_user_path(@user) %></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="final">
+			<table class="table table-bordered">
+				<tbody style="border: 2px #808080 solid;">
+					<tr>
+						<td class="boought-review" width="30px" bgcolor="#fff">購入</td>
+						<td class="sold-review" width="30px" bgcolor="#fff">販売</td>
+					</tr>
+					<tr>
+						<td bgcolor="#fff">
+							<% if @trading %>
+								<p>
+								  <span class="sun"><i class="fas fa-sun"></i>
+								  </span>&emsp;&emsp;
+								  <span class="review-number"><%= Trading.where(excellent_review: true, buyer_id: @user.id).count %>
+								  </span>
+								</p>
+								<p>
+								  <span class="glyphicon glyphicon-cloud" aria-hidden="true">
+								  </span>&emsp;&emsp;&nbsp;&nbsp;
+								  <span class="review-number"><%= Trading.where(good_review: true, buyer_id: @user.id).count %>
+								  </span>
+								</p>
+								<p>
+								  <span class="umbrella"><i class="fas fa-umbrella"></i>
+								  </span>&emsp;&emsp;
+								  <span class="review-number"><%= Trading.where(poor_review: true, buyer_id: @user.id).count %>
+								  </span>
+								</p>
+							<% end %>
+						</td>
+						<td bgcolor="#fff">
+	                        <% if @tradings %>
+								<p>
+								  <span class="sun"><i class="fas fa-sun"></i>
+								  </span>&emsp;&emsp;
+								  <span class="review-number"><%= Trading.where(seller_excellent_review: true, seller_id: @user.id).count %>
+								  </span>
+								</p>
+								<p>
+								  <span class="glyphicon glyphicon-cloud" aria-hidden="true">
+								  </span>&emsp;&emsp;&nbsp;&nbsp;
+								  <span class="review-number"><%= Trading.where(seller_good_review: true, seller_id: @user.id).count %>
+								  </span>
+								</p>
+								<p>
+								  <span class="umbrella"><i class="fas fa-umbrella"></i>
+								  </span>&emsp;&emsp;
+								  <span class="review-number"><%= Trading.where(seller_poor_review: true, seller_id: @user.id).count %>
+								  </span>
+								</p>
+							<% end %>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered">
+				<tbody style="border: 2px #808080 solid;">
+					<tr>
+						<td class="introduction" bgcolor="#fff">
+							自己紹介 <i class="far fa-comment-dots"></i>
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="#fff">
+							<% if @user.introduction %>
+								<%= @user.introduction %>
+							<% else %>
+								<%= "自己紹介は登録されていません" %>
+							<% end %>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="camera">
+		      <%= link_to "", new_product_path, class: "btn btn-default btn-circle btn-lg glyphicon glyphicon-camera" %>
+		    </div>
+		</div>
+	</div>
+</div>
