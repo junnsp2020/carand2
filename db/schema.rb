@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2020_06_01_083517) do
     t.integer "postage"
     t.integer "postage_responsibility"
     t.integer "status"
-    t.integer "sale_status"
+    t.integer "sale_status", default: 0
     t.integer "propriety"
     t.boolean "notice"
   end
