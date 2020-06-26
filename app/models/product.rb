@@ -1,6 +1,35 @@
 class Product < ApplicationRecord
   attachment :image
 
+  def postage
+    postage = 1000
+  end
+
+  def favorited_by?(user)
+    if user
+      favorites.where(user_id: user.id).exists?
+    else
+      return nil
+    end
+  end
+
+  def wished_by?(user)
+    if user
+      wishlists.where(user_id: user.id).exists?
+    else
+      return nil
+    end
+  end
+
+  enum postage_responsibility:{
+    "出品者負担": 0,
+    "購入者負担": 1
+  }
+  enum sale_status:{
+    "販売中": 0,
+    "売り切れ": 1,
+    "交換済": 2
+  }
   enum status:{
   	"新品・未使用": 0,
   	"未使用に近い": 1,
