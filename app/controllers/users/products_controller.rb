@@ -12,6 +12,11 @@ class Users::ProductsController < ApplicationController
     end
   end
 
+  def show
+    @product = Product.find(params[:id])
+    @product_comment = ProductComment.new
+  end
+
   def create
     @product = Product.new(product_params)
     @product.user_id = current_user.id

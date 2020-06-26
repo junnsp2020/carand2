@@ -50,7 +50,7 @@
       <% end %>
         <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? && !request.fullpath.include?("administers") %>
-            <% if Barterrequest.where(buyer_id: current_user.id, notice: true).count != 0 %>
+            <% if BarterRequest.where(buyer_id: current_user.id, notice: true).count != 0 %>
               <div class="alert alert-info" role="alert"><%= link_to "リクエストが許可されました", my_request_barter_requests_path(current_user.id) %></div>
             <% end %>
             <% if Product.where(user_id: current_user.id, notice: false).count != 0 %>
@@ -72,7 +72,7 @@
             <% if Trading.where(seller_id: current_user.id, payment_status: "出品者へ入金報告する").count != 0 %>
               <div class="alert alert-info" role="alert"><%= link_to "商品が購入されました 入金を待っています", sold_tradings_path %>
             <% end %></div>
-            <li class="wishlists"><%= lint_to "ほしいものリスト", wish_wishlists_path %></li>
+            <li class="wishlists"><%= link_to "ほしいものリスト", wish_wishlists_path %></li>
             <li>
               <span class="trading-list">
                 <%= link_to "買った！", bought_tradings_path %>
