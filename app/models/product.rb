@@ -42,6 +42,12 @@ class Product < ApplicationRecord
   	"交換可能": 1
   }
 
+  has_one :trading, autosave: true, dependent: :destroy
   belongs_to :user
   belongs_to :category
+
+  private
+    def build_child
+      build_trading
+    end
 end
