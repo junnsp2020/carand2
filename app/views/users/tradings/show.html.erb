@@ -1,0 +1,245 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-9">
+			<h2 class="col-xs-9">
+				<h2 class="trading-show">取引画面</h2>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "出品者へ入金報告する" %>
+						<p class="notice"><%= "取引がスタートしました。入金後、出品者へ報告してください。" %></p>
+						<%= link_to @trading.payment_status, trading_change_payment_status_path(@trading), method: :patch, class: "btn btn-danger" %>
+					<% end %>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "入金報告をしました。出品者の発送待ちです" %>
+						<p class="notice"><%= "入金報告をしました。出品者の発送待ちです" %></p>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.payment_status == "出品者へ入金報告をする" %>
+						<p class="notice"><%= "商品が購入されました！ 購入者からの入金待ちです お待ちください" %></p>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.payment_status == "入金報告をしました。出品者の発送待ちです" %>
+						<p class="notice"><%= "購入者より代金が支払われました 商品を出荷してください" %></p>
+						<%= link_to @trading.shipment_status, trading_change_shipment_status_path(@trading), method: :patch, class: "btn btn-danger" %>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.payment_status == "受取報告をする" && @trading.seller_excellent_review == nil && @trading.seller_good_review == nil && @trading.seller_poor_review == nil %>
+						<p class="notice"><%= "出荷を通知しました 購入者の受取評価をお待ちください" %></p>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.seller_excellent_review == true && @trading.excellent_review == nil && @trading.good_review == nil && @trading.poor_review == nil && @trading.paymethod != "交換" %>
+						<p class="notice"><%= "購入者が受け取りました 購入者の評価をしてください" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :poor_review, :true, :style=>"margin-right: 45px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% elsif @trading.seller_id == current_user.id && @trading.seller_good_review == true && @trading.excellent_review == nil && @trading.good_review == nil && @trading.poor_review == nil && @trading.paymethod != "交換" %>
+						<p class="notice"><%= "購入者が受け取りました 購入者の評価をしてください" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :poor_review, :true, :style=>"margin-right: 45px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% elsif @trading.seller_id == current_user.id && @trading.seller_poor_review == true && @trading.excellent_review == nil && @trading.good_review == nil && @trading.poor_review == nil && @trading.paymethod != "交換" %>
+						<p class="notice"><%= "購入者が受け取りました 購入者の評価をしてください" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :poor_review, :true, :style=>"margin-right: 45px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.shipment_status == "取引完了" && @trading.excellent_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% elsif @trading.seller_id == current_user.id && @trading.shipment_status == "取引完了" && @trading.good_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% elsif @trading.seller_id == current_user.id && @trading.shipment_status == "取引完了" && @trading.poor_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% end %>
+
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "受取報告をする" && @trading.seller_excellent_review == nil && @trading.seller_good_review == nil && @trading.seller_poor_review == nil %>
+						<p class="notice"><%= "商品が発送されました 到着後、受取評価をしてください" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :seller_excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :seller_good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :seller_poor_review, :true, :style=>"margin-right: 40px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% end %>
+
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "ご利用誠にありがとうございました！" && @trading.seller_excellent_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% elsif @trading.buyer_id == current_user.id && @trading.payment_status == "ご利用誠にありがとうございました！" && @trading.seller_good_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% elsif @trading.buyer_id == current_user.id && @trading.payment_status == "ご利用誠にありがとうございました！" && @trading.seller_poor_review == true %>
+						<p class="notice"><%= "ご利用誠にありがとうございました！" %></p>
+					<% end %>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "交換(購入者)" && @trading.seller_excellent_review == nil && @trading.seller_good_review == nil && @trading.seller_poor_review == nil %>
+						<p class="notice"><%= "メッセージ機能を使い、送り状番号を確認し合いましょう！" %></p>
+						<%= link_to "番号の確認完了(※必ずお互いの番号を確認してから押してください)", trading_change_payment_status_path(@trading), method: :patch, class: "btn btn-danger" %>
+					<% end %>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "番号確認完了(購入者)" && @trading.seller_excellent_review == nil && @trading.seller_good_review == nil && @trading.seller_poor_review == nil %>
+						<p class="notice"><%= "商品到着後、交換者の評価をお願いします" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :seller_excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :seller_good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :seller_poor_review, :true, :style=>"margin-right: 45px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% end %>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "交換お疲れ様でした(購入者)" %>
+						<p class="notice"><%= "交換お疲れ様でした！ またのご利用をお待ちしております。" %></p>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.shipment_status == "交換(出品者)" && @trading.excellent_review == nil && @trading.good_review == nil && @trading.poor_review == nil %>
+						<p class="notice"><%= "メッセージ機能を使い、送り状番号を確認し合いましょう！" %></p>
+						<%= link_to "番号の確認完了(※必ずお互いの番号を確認してから押してください)", trading_change_shipment_status_path(@trading), method: :patch, class: "btn btn-danger" %>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.shipment_status == "番号確認完了(出品者)" && @trading.excellent_review == nil && @trading.good_review == nil && @trading.poor_review == nil %>
+						<p class="notice"><%= "商品到着後、交換者の評価をお願いします" %></p>
+							<span class="radio-button">良い</span>
+							<span class="radio-button">ふつう</span>
+							<span class="radio-button">わるい</span>
+							<%= form_for (@trading) do |f| %>
+								<%= f.radio_button :excellent_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :good_review, :true, :style=>"margin-right: 45px;" %>
+								<%= f.radio_button :poor_review, :true, :style=>"margin-right: 45px;" %>
+							<%= f.submit "評価を確定する", class: "btn btn-danger" %>
+							<% end %>
+					<% end %>
+					<% if @trading.seller_id == current_user.id && @trading.shipment_status == "交換お疲れ様でした(出品者)" %>
+						<p class="notice"><%= "交換お疲れ様でした！ またのご利用をお待ちしております。" %></p>
+					<% end %>
+					<div class="message-area">
+						<table class="table table-bordered">
+							<tbody>
+							<% @trading_messages.each do |trading_message| %>
+								<tr>
+									<td>
+										<%= trading_message.message %>
+									</td>
+								</tr>
+							<% end %>
+							</tbody>
+						</table>
+					</div>
+					<%= form_for [@trading, @trading_message] do |f| %>
+						<%= f.text_area :message, rows:"5", class: "form-control", placeholder: "コメントをここに" %>
+						<%= f.submit "取引メッセージを送る", class: "btn btn-lg btn-base-1 mt-20 pull-right", :style=>"font-weight:bold; background: #999999;" %>
+					<% end %>
+					<br></br>
+					<br></br>
+					<% if current_user == @seller %>
+						<table class="table table-bordered">
+							<tbody style="border: 5px #808080 solid;">
+								<tr>
+									<td class="shipping-address" bgcolor="#fff" colspan=2>
+										配送先情報
+									</td>
+								</tr>
+								<tr>
+									<td width="20%">〒<%= @buyer.postcode %></td>
+									<td width="80%"><%= @buyer.prefecture_code %>
+									<%= @buyer.address_city %>
+									<%= @buyer.address_street %>
+								</tr>
+								<tr>
+									<td width="20%"><%= @buyer.last_name + @buyer.first_name %></td>
+									<td width="80%"><%= @buyer.phone_number %></td>
+								</tr>
+							</tbody>
+						</table>
+					<% end %>
+					<% if current_user == @buyer && @trading.paymethod == "交換" %>
+						<table class="table table-bordered">
+							<tbody style="border: 5px #808080 solid;">
+								<tr>
+									<td class="shipping-address" bgcolor="#fff" colspan=2>
+										配送先情報
+									</td>
+								</tr>
+								<tr>
+									<td width="20%">〒<%= @seller.postcode %></td>
+									<td width="80%"><%= @seller.prefecture_code %>
+									<%= @seller.address_city %>
+									<%= @seller.address_street %>
+								</tr>
+								<tr>
+									<td width="20%"><%= @seller.last_name + @seller.first_name %></td>
+									<td width="80%"><%= @seller.phone_number %></td>
+								</tr>
+							</tbody>
+						</table>
+					<% end %>
+			</div>
+			<div class="col-xs-3">
+				<h4 class="trading-show">取引情報</h4>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td>
+									<%= attachment_image_tag @product, :image, format: "jpeg", fallback: "no_image.jpg", size: "60x60", class: "center-block" %>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="trading-product">商品名 <%= link_to @trading.product.name, product_path(@trading.product.id), :style=>"font-weight:bold; font-size: 25px;" %></span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<span class="trading-postage">送料 (<%= @trading.product.postage_responsibility %>)</span>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<% if @trading.buyer_id == current_user.id && @trading.paymethod != 2 %>
+										<span class="trading-price">購入価格 (<%= @trading.product.price %>)</span>
+									<% elsif @trading.buyer_id == current_user.id && @trading.paymethod == 2 %>
+										<%= 交換取引によって入手する %>
+									<% else %>
+										<span class="trading-price">販売利益 (<%= number_to_currency(@trading.product.price, :unit =>"￥", :precision => 0) %>)</span>
+									<% end %>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									購入日時 <%= @trading.created_at.strftime("%Y念%m月%d日") %>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-bordered">
+						<tbody>
+							<tr>
+								<td class="trading-person" style="font-weight:bold;">
+									取引相手
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<% if @trading.buyer_id == current_user.id %>
+										<%= attachment_image_tag @trading.product.user, :image, format: "jpeg", fallback: "no_image.jpg", size: "60x60", class: "center-block" %>
+										<%= @trading.product.user.nickname %>
+									<% else %>
+										<%= attachment_image_tag @trading.user, :image, format: "jpeg", fallback: "no_image.jpg", size: "60x60", class: "center-block" %>
+										<%= @trading.user.nickname %>
+									<% end %>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		</div>
+	</div>
+
