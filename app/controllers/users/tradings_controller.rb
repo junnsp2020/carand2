@@ -39,6 +39,18 @@ class Users::TradingsController < ApplicationController
 		redirect_to trading_path(@trading)
 	end
 
+	def bought
+		@tradings = Trading.where("(paymethod = ?) OR (paymethod = ?)", 0, 1).where(buyer_id: current_user.id)
+	end
+
+	def sold
+		@tradings = Trading.where("(paymethod = ?) OR (paymethod = ?)", 0, 1).where(seller_id: current_user.id)
+	end
+
+	def barter
+		@tradings = Trading.where("(buyer_id = ?) OR (seller_id = ?)", current_user.id, current_user.id).where(paymethod: 2)
+	end
+
 	def update
 		@trading = Trading.find(params[:id])
 		@trading_message = TradingMessage.new
