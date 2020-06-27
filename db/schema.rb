@@ -114,8 +114,8 @@ ActiveRecord::Schema.define(version: 2020_06_01_083517) do
     t.integer "paymethod"
     t.integer "buyer_id"
     t.integer "seller_id"
-    t.integer "shipment_status"
-    t.integer "payment_status"
+    t.integer "shipment_status", default: 0
+    t.integer "payment_status", default: 0
     t.boolean "excellent_review"
     t.boolean "good_review"
     t.boolean "poor_review"

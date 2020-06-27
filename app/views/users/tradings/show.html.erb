@@ -3,7 +3,7 @@
 		<div class="col-xs-9">
 			<h2 class="col-xs-9">
 				<h2 class="trading-show">取引画面</h2>
-					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "出品者へ入金報告する" %>
+					<% if @trading.buyer_id == current_user.id && @trading.payment_status == "出品者へ入金報告をする" %>
 						<p class="notice"><%= "取引がスタートしました。入金後、出品者へ報告してください。" %></p>
 						<%= link_to @trading.payment_status, trading_change_payment_status_path(@trading), method: :patch, class: "btn btn-danger" %>
 					<% end %>
