@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :buyers, through: :active_relationships, source: :seller
   has_many :passive_tradings, class_name: "Trading", foreign_key: :seller_id
   has_many :sellers, through: :passive_relationships, source: :buyer
+  has_many :barter_requests
   has_many :trading_messages
 
   validates :last_name, presence: true

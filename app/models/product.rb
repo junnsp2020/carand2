@@ -45,6 +45,7 @@ class Product < ApplicationRecord
   has_one :trading, autosave: true, dependent: :destroy
   belongs_to :user
   belongs_to :category
+  has_many :barter_requests
 
   private
     def build_child
