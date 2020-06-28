@@ -1,29 +1,87 @@
-<h2>Sign up</h2>
+<div class="container">
+  <h3 class="user-sign-up">個人情報</h3>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+    <div class="row">
+      <div class="col-xs-10">
+        <% if resource.errors.any? %>
+          <div class="error_explanation">
+            <h3><%= resource.errors.count %><%= "件エラーがあります" %></h3>
+            <ul>
+              <% resource.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td>お名前 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td>
+                <%= f.text_field :last_name, placeholder: "姓を入力", autofocus: true, class: "col-xs-6" %>
+                <%= f.text_field :first_name, placeholder: "名を入力", class: "col-xs-6" %>
+              </td>
+            </tr>
+            <tr>
+              <td>お名前 (カナ) <span> 【<span class="required-item">必須</span>】</span></td>
+              <td>
+                <%= f.text_field :last_name_kana, placeholder: "姓(カナ)を入力", class: "col-xs-6" %>
+                <%= f.text_field :first_name_kana, placeholder: "名(カナ)を入力", class: "col-xs-6" %>
+              </td>
+            </tr>
+            <tr>
+              <td>ニックネーム (カランド内で使用します) <span> 【<span class="required-item">必須</span>】</span></td>
+              <td>
+                <%= f.text_field :nickname, placeholder: "ニックネームを入力(後から変更可能です)", autofocus: true, class: "col-xs-12" %>
+              </td>
+            </tr>
+            <tr>
+              <td>郵便番号 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :postcode, placeholder: "郵便番号(ハイフンなし7桁)を入力", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>都道府県 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :prefecture_code, placeholder: "都道府県を入力", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>市区町村 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :address_city, placeholder: "市区町村を入力", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>番地 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :address_street, placeholder: "番地を入力", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>建物名 【任意】</td>
+              <td><%= f.text_field :address_building, placeholder: "建物名", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>電話番号 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :phone_number, placeholder: "電話番号(ハイフンなし10桁もしくは11桁)を入力", class: "col-xs-12" %></td>
+            </tr>
+            <tr>
+              <td>メールアドレス <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.text_field :email, placeholder: "メールアドレスを入力", class: "col-xs-8" %></td>
+            </tr>
+            <tr>
+              <td>
+                パスワード
+                <% if @minimum_password_length %>
+                  <em>(<%= @munimum_password_length %>文字以上)</em>
+                <% end %>
+                  <span> 【<span class="required-item">必須</span>】</span>
+              </td>
+              <td><%= f.password_field :password, placeholder: "パスワードを入力", class: "col-xs-8" %></td>
+            </tr>
+            <tr>
+              <td>パスワード再入力 <span> 【<span class="required-item">必須</span>】</span></td>
+              <td><%= f.password_field :password_confirmation, placeholder: "パスワードを入力", class: "col-xs-8" %></td>
+            </tr>
+          </tbody>
+        </table>
+        <%= f.submit "登録", class: "btn btn-success col-xs-4 col-xs-offset-4" %>
+        <% end %>
+      </div>
+    </div>
+</div>
