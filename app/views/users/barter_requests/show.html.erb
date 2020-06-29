@@ -1,0 +1,53 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2">
+			<table class="table table-bordered" style="border: 4px #808080 solid;">
+				<tbody>
+					<tr>
+						<td>
+							<%= attachment_image_tag @barter_request, :image, format: "jpeg", fallback: "no_image.jpg", size: "200x200", class: "center-block" %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col-xs-3"><span class="barter-details">提案商品</span></div><%= @barter_request.name %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col-xs-3"><span class="border-details">一言コメント</span></div><%= @barter_request.comment %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col-xs-3"><span class="barter-details">商品の状態</span></div><%= @barter_request.product_condition %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="col-xs-3"><span class="barter-details">商品説明</span></div>
+						</td>
+					</tr>
+					<tr>
+						<td width="100%" height="150px">
+							<%= @barter_request.introduction %>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<% if current_user == @product.user %>
+								<%= form_for(@barter_request, url: product_barter_request_path(@product, @barter_request), method: :patch) do |f| %>
+									<%= f.select :propriety, BarterRequest.proprieties.keys, class: "col-xs-8" %>
+									<%= f.submit "確定", class: "btn-sm btn-danger" %>
+								<% end %>
+							<% end %>
+							<% if current_user == @product.user && @barter_request.propriety == "許可する" %>
+								<span class="propriety"><%= "リクエストを許可しました" %></span>
+							<% end %>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
