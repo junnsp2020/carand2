@@ -1,0 +1,55 @@
+<div class="container">
+	<div class="row">
+		<div class="col-xs-10">
+			<h4 class="requested-page">交換リクエスト【もらった】 一覧</h4>
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td class="requested-page">あなたが出品した商品</td>
+							<td></td>
+							<td class="requested-page">相手の提案商品</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<% @barter_requests.each do |barter_request| %>
+							<tr style="border: 3px #808080 solid;">
+								<td width="20%">
+									<%= link_to product_path(barter_request.product.id) do %>
+										<%= attachment_image_tag barter_request.product, :image, format: "jpeg", fallback: "no_image.jpg", size: "60x60", class: "center-block" %>
+									<% end %>
+								</td>
+								<td width="20%">
+									<%= link_to barter_request.product.name, product_path(barter_request.product.id) %>
+								</td>
+								<td width="20%">
+									<%= link_to product_barter_request_path(barter_request.product.id, barter_request) do %>
+										<%= attachment_image_tag barter_request, :image, format: "jpeg", fallback: "no_image.jpg", size: "50x50" %>
+									<% end %>
+								</td>
+								<td width="20%">
+									<%= link_to barter_request.name, product_barter_request_path(barter_request.product.id, barter_request) %>
+									<% if barter_request.propriety == "許可する" && barter_request.product.sale_status == "売り切れ" %>
+										<%= link_to "取引ページへ", trading_path(Trading.find_by(product_id: barter_request.product.id)), class: "btn-sm btn-success col-xs-12" %>
+									<% end %>
+								</td>
+								<td width="20%">
+									<%= barter_request.created_at.strftime("%Y-%m-%d") %>
+								</td>
+								<td>
+									<% if current_user == barter_request.product.user %>
+										<%= form_for(barter_request, url: product_barter_request_path(barter_request.product, barter_request)) do |f| %>
+											<%= f.select :propriety, BarterRequest.proprieties.keys, class: "col-xs-8" %>
+											<%= f.submit "確定" %>
+										<% end %>
+									<% end %>
+									<% if current_user == barter_request.product.user && barter_request.propriety == "許可する" %>
+										<span class="propriety"><%= "リクエストを許可しました" %></span>
+									<% end %>
+								</td>
+							</tr>
+						<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
