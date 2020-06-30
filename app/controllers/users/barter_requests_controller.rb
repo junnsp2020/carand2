@@ -48,6 +48,10 @@ class Users::BarterRequestsController < ApplicationController
         end
     end
 
+    def my_request
+        @barter_requests = BarterRequest.where(user_id: params[:user_id])
+    end
+
     def requested
         @product = Product.where(user_id: current_user.id)
         @barter_requests = BarterRequest.where(product_id: @product)
